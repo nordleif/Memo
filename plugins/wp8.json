@@ -1,0 +1,60 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"Console\"><param name=\"wp-package\" value=\"DebugConsole\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Accelerometer\"><param name=\"wp-package\" value=\"Accelerometer\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Compass\"><param name=\"wp-package\" value=\"Compass\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Vibration\"><param name=\"wp-package\" value=\"Vibration\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "Properties/WMAppManifest.xml": {
+                "parents": {
+                    "/Deployment/App/Capabilities": [
+                        {
+                            "xml": "<Capability Name=\"ID_CAP_SENSORS\" />",
+                            "count": 2
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "{3d15f2c0-b229-11e5-9a52-6b573a919c4b}"
+        },
+        "cordova-plugin-device-motion": {
+            "PACKAGE_NAME": "{3d15f2c0-b229-11e5-9a52-6b573a919c4b}"
+        },
+        "cordova-plugin-device-orientation": {
+            "PACKAGE_NAME": "{3d15f2c0-b229-11e5-9a52-6b573a919c4b}"
+        },
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "{3d15f2c0-b229-11e5-9a52-6b573a919c4b}"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "{3d15f2c0-b229-11e5-9a52-6b573a919c4b}"
+        }
+    },
+    "dependent_plugins": {}
+}

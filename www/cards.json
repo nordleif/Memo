@@ -1,0 +1,719 @@
+﻿{
+  "cards": [
+    {
+      "topic": "Udsagnsord",
+      "upperText": "aprender",
+      "lowerText": "lære"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "permitir; dejar",
+      "lowerText": "tillade"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "preguntar",
+      "lowerText": "spørge"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "creer",
+      "lowerText": "tro på"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "prestar",
+      "lowerText": "låne"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "romper",
+      "lowerText": "pause"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "traer",
+      "lowerText": "bringe; have/tage med"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "comprar",
+      "lowerText": "købe"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "poder",
+      "lowerText": "kunne"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "cancelar",
+      "lowerText": "annullere"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "cambiar",
+      "lowerText": "bytte; veksle"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "limpiar",
+      "lowerText": "rense"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "peinar",
+      "lowerText": "frisere"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "quejarse",
+      "lowerText": "klage"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "toser",
+      "lowerText": "hoste"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "contar",
+      "lowerText": "tælle"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "cortar",
+      "lowerText": "skære; klippe"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "bailar",
+      "lowerText": "danse"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "dibujar",
+      "lowerText": "tegne"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "beber",
+      "lowerText": "drikke"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "conducir",
+      "lowerText": "køre"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "comer",
+      "lowerText": "spise"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "explicar",
+      "lowerText": "forklare"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "caerse",
+      "lowerText": "falde"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "llenar",
+      "lowerText": "fylde"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "encontrar",
+      "lowerText": "finde"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "terminar",
+      "lowerText": "afslutte"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "caber",
+      "lowerText": "passe"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "reparar",
+      "lowerText": "reparere"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "volar",
+      "lowerText": "flyve"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "olvidar",
+      "lowerText": "glemme"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "dar",
+      "lowerText": "give"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "ir",
+      "lowerText": "gå"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "tener",
+      "lowerText": "have"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "oír",
+      "lowerText": "høre"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "dañar; herir",
+      "lowerText": "skde"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "saber; conocer",
+      "lowerText": "vide"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "aprender",
+      "lowerText": "lære"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "salir; marcharse",
+      "lowerText": "gå/komme ud; tage af sted"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "escuchar",
+      "lowerText": "lytte"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "vivir",
+      "lowerText": "leve"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "mirar",
+      "lowerText": "se"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "perder",
+      "lowerText": "miste; tabe"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "hacer",
+      "lowerText": "lave"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "necesitar",
+      "lowerText": "behøve"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "abrir",
+      "lowerText": "åbne"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "cerrar",
+      "lowerText": "lukke"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "organizar",
+      "lowerText": "ordne; arrangere"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "pagar",
+      "lowerText": "betale"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "jugar",
+      "lowerText": "spille"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "poner",
+      "lowerText": "lægge"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "llover",
+      "lowerText": "regne"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "leer",
+      "lowerText": "læse"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "responder",
+      "lowerText": "svare"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "correr",
+      "lowerText": "løbe"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "decir",
+      "lowerText": "sige"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "ver",
+      "lowerText": "se"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "vender",
+      "lowerText": "sælge"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "enviar",
+      "lowerText": "sende"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "firmar",
+      "lowerText": "skrive"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "cantar",
+      "lowerText": "synge"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "sentarse",
+      "lowerText": "side"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "dormir",
+      "lowerText": "sove"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "fumar",
+      "lowerText": "ryge"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "hablar",
+      "lowerText": "tale"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "deletrear",
+      "lowerText": "stave"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "gastar",
+      "lowerText": "bruge"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "ponerse de pie",
+      "lowerText": "stå"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "comenzar",
+      "lowerText": "begynde"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "estudiar",
+      "lowerText": "studere"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "tener éxito",
+      "lowerText": "lykkes"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "nadar",
+      "lowerText": "svømme"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "tomar",
+      "lowerText": "tage"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "hablar",
+      "lowerText": "tale"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "enseñar",
+      "lowerText": "lære"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "decir",
+      "lowerText": "sige"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "pensar",
+      "lowerText": "tænke"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "traducir",
+      "lowerText": "oversætte"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "viajar",
+      "lowerText": "rejse"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "intentar",
+      "lowerText": "forsøge"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "apagar",
+      "lowerText": "slukke"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "encender",
+      "lowerText": "tænde"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "entender",
+      "lowerText": "forstå"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "utilizar; usar",
+      "lowerText": "bruge"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "esperar",
+      "lowerText": "vente"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "despertar",
+      "lowerText": "vække"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "querer; desear",
+      "lowerText": "ønske"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "mirar",
+      "lowerText": "se"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "trabajar",
+      "lowerText": "arbejde"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "preocuparse",
+      "lowerText": "bekymre"
+    },
+    {
+      "topic": "Udsagnsord",
+      "upperText": "escribir",
+      "lowerText": "skrive"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "limpio sucio",
+      "lowerText": "ren snavset"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "mojado seco",
+      "lowerText": "våd tør"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "rudio ilencio",
+      "lowerText": "larm stille"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "lleno vacio",
+      "lowerText": "fuld tom"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "rico pobre",
+      "lowerText": "rig fattig"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "alto bajo",
+      "lowerText": "høj lav"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "dormido despierto",
+      "lowerText": "sover vågen"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "duro suave",
+      "lowerText": "hård blød"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "enfermo sano",
+      "lowerText": "syg rask"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "feliz triste",
+      "lowerText": "glad trist"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "abajo arribo",
+      "lowerText": "nede oppe"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "grande pequeño",
+      "lowerText": "stor lille"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "joven viejo",
+      "lowerText": "ung gammel"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "nuevo viejo",
+      "lowerText": "ny gmammel"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "guapo feo",
+      "lowerText": "smuk grim"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "derecho izquirdo",
+      "lowerText": "højre venstre"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "adelante atrás",
+      "lowerText": "foran bagved"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "claro oscuro",
+      "lowerText": "klar uklar"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "abierto cerrado",
+      "lowerText": "åben lukket"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "bueno malo",
+      "lowerText": "god årlig"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "bonito feo",
+      "lowerText": "snuk grim"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "barato caro",
+      "lowerText": "billig dyr"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "ancho angosto",
+      "lowerText": "bred smal"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "caliente frio",
+      "lowerText": "var kold"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "inteligente tonto",
+      "lowerText": "inteligent dum"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "liviano pesado",
+      "lowerText": "let tung"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "aburrido divertido",
+      "lowerText": "kedelig sjov"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "cómodo incomodo",
+      "lowerText": "konfortable ukonfortable"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "corto largo",
+      "lowerText": "kort lang"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "curvo recto",
+      "lowerText": "buet lige"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "debil fuerte",
+      "lowerText": "svag stærk"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "delgado gordo",
+      "lowerText": "tynd fed"
+    },
+    {
+      "topic": "Modsatte tillægsord",
+      "upperText": "dificil facil",
+      "lowerText": "svær nem"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "lunes",
+      "lowerText": "mandag"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "martes",
+      "lowerText": "tirsdag"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "miercoles",
+      "lowerText": "onsdag"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "jueves",
+      "lowerText": "torsdag"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "viernes",
+      "lowerText": "fredag"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "sabado",
+      "lowerText": "lørdag"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "domingo",
+      "lowerText": "søndag"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "enero",
+      "lowerText": "januar"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "febrero",
+      "lowerText": "februar"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "marzo",
+      "lowerText": "marts"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "abril",
+      "lowerText": "april"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "mayo",
+      "lowerText": "maj"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "junio",
+      "lowerText": "juni"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "julio",
+      "lowerText": "juli"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "agosto",
+      "lowerText": "agust"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "septiembre ",
+      "lowerText": "september"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "octubre",
+      "lowerText": "oktober"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "noviembre",
+      "lowerText": "november"
+    },
+    {
+      "topic": "Ugedage og måneder",
+      "upperText": "diciembre",
+      "lowerText": "december"
+    }
+  ]
+}

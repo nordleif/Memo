@@ -1,0 +1,3 @@
+<StackPanel Background="#2c9e41" Orientation="Horizontal">
+	<Image Margin="118" Source="images/memo-result-6.png"></Image>
+</StackPanel>

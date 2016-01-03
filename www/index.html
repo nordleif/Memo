@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    <title>Memo</title>
+    
+    <link rel="stylesheet" href="css/font_awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/ionicons/css/ionicons.min.css" />
+    <link rel="stylesheet" href="css/framework7.ios.min.css" />
+    <link rel="stylesheet" href="css/framework7.ios.colors.min.css" />
+    <link rel="stylesheet" href="css/index.css" />
+
+</head>
+<body data-ng-controller="memoController as memo">
+    <div class="statusbar-overlay"></div>
+    <div class="panel-overlay"></div>
+
+    <!-- Left Drawer -->
+    <div class="panel panel-left panel-reveal">
+        <div class="list-block">
+            <ul>
+                <li ng-repeat="topic in memo.topics">
+                    <a class="item-link item-content" ng-click="memo.changeTopic(topic)">
+                        <div class="item-inner">
+                            {{topic}}
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="form.html" class="item-link item-content" ng-click="memo.shuffle()">
+                        <div class="item-inner">
+                            Shuffle
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="sandbox.html" class="item-link item-content">
+                        <div class="item-inner">
+                            Sandbox
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="form.html" class="item-link item-content">
+                        <div class="item-inner">
+                            Form Example
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Views -->
+    <div class="views">
+
+        <!-- Main View -->
+        <div class="view view-main">
+
+            <!-- Navbar -->
+            <div class="navbar no-border">
+
+                <!-- Index -->
+                <div class="navbar-inner" data-page="index">
+                    <div class="center">{{memo.topic}}</div>
+                </div>
+                
+                <!-- Portrait -->
+                <div class="navbar-inner cached" data-page="portrait">
+                    <div class="left">
+                        <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+                    </div>
+                    <div class="center">{{memo.topic}}</div>
+                </div>
+
+                <!-- Landscape -->
+                <div class="navbar-inner cached" data-page="landscape">
+                    <div class="center">{{memo.topic}}</div>
+                </div>
+
+            </div>
+
+            <!-- Pages -->
+            <div class="pages navbar-through toolbar-through">
+                
+                <!-- Index -->
+                <div class="page" data-page="index">
+                    <div class="page-content">
+                        
+                    </div>
+                </div>
+
+                <!-- Portrait -->
+                <div class="page cached" data-page="portrait">
+                    <div class="page-content">
+                        <div class="list-block inset">
+                            <ul>
+                                <li ng-repeat="card in memo.cards" class="swipeout">
+                                    <div class="swipeout-content item-content">
+                                        <div class="item-inner">{{card.upperText}}</div>
+                                    </div>
+                                    <div class="swipeout-actions-right">
+                                        <a>
+                                            <div style="min-width: 150px;">{{card.lowerText}}</div>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Landscape -->
+                <div class="page cached" data-page="landscape">
+                    <div class="page-content">
+                        <div class="swiper-container swiper-1">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-wrapper">
+                                <div ng-repeat="card in memo.cards" class="swiper-slide"><span>{{card.upperText}}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="cordova.js"></script>
+    <script src="scripts/platformOverrides.js"></script>
+    <script src="scripts/angular.js"></script>
+    <script src="scripts//angular-route.js"></script>
+    <script src="scripts/framework7.min.js"></script>
+    <script src="scripts/appBundle.js"></script> 
+
+</body>
+</html>
