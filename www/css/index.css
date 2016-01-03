@@ -1,7 +1,28 @@
 ﻿
-.panel-left .list-block ul {
-    background-color: #111111;
-    color: white;
+body {
+  background: #689f38;
+  color: #ffffff;
+}
+
+.navbar {
+  border-bottom: none;
+  background: #689f38;
+  color: #ffffff;
+}
+
+.page {
+  background: #689f38;
+  color: #000000;
+}
+
+.panel {
+  background: #558b2f;
+  color: #ffffff;
+}
+
+.panel ul {
+  background: #558b2f;
+  color: #ffffff;
 }
 
 .swiper-slide {
@@ -9,12 +30,14 @@
   box-sizing: border-box;
   border: 1px solid #ccc;
 }
+
 .swiper-slide span {
   text-align:center;
   display:block;
   margin: 20px;
   font-size:21px;
 }
+
 .swiper-container {
   height: 120px;
   margin: 35px 0;
