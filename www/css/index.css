@@ -1,17 +1,27 @@
 ﻿
 body {
-  background: #689f38;
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
+}
+
+.card.lower {
+    background: #9ccc65;
+    color: #000000;
+}
+
+.card.upper {
+    background: #689f38;
+    color: #ffffff;
 }
 
 .navbar {
   border-bottom: none;
-  background: #689f38;
+  background: #8bc34a;
   color: #ffffff;
 }
 
 .page {
-  background: #689f38;
+  background: #ffffff;
   color: #000000;
 }
 

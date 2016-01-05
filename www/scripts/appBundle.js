@@ -99,21 +99,26 @@ var Memo;
         function onPageAfterBack(e) {
         }
     })(Application = Memo.Application || (Memo.Application = {}));
-    window.onload = function () {
-        Application.initialize();
-    };
+    window.shouldRotateToOrientation = function (degrees) { return true; };
+    window.onload = function () { Application.initialize(); };
 })(Memo || (Memo = {}));
 var Memo;
 (function (Memo) {
     "use strict";
+    var Card = (function () {
+        function Card() {
+        }
+        return Card;
+    })();
+    Memo.Card = Card;
     var CardService = (function () {
         function CardService($http, $q) {
-            this.$http = $http;
-            this.$q = $q;
+            this._http = $http;
+            this._q = $q;
         }
         CardService.prototype.getCards = function (topic) {
-            var defer = this.$q.defer();
-            this.$http.get('cards.json').success(function (data) {
+            var defer = this._q.defer();
+            this._http.get('cards.json').success(function (data) {
                 var cards = data.cards;
                 var result = [];
                 for (var i = 0; i < cards.length; i++) {
@@ -128,8 +133,8 @@ var Memo;
         };
         CardService.prototype.getTopics = function () {
             var _this = this;
-            var defer = this.$q.defer();
-            this.$http.get('cards.json').success(function (data) {
+            var defer = this._q.defer();
+            this._http.get('cards.json').success(function (data) {
                 var cards = data.cards;
                 var result = [];
                 for (var i = 0; i < cards.length; i++) {
@@ -162,103 +167,119 @@ var Memo;
     var MemoController = (function () {
         function MemoController($scope, f7App, mainView, accelerationService, cardService, orientationService, vibrateService) {
             var _this = this;
-            this.$scope = $scope;
-            this.f7App = f7App;
-            this.mainView = mainView;
-            this.accelerationService = accelerationService;
-            this.accelerationService.onShake = function () { return _this.onShake(); };
-            this.cardService = cardService;
-            this.orientationService = orientationService;
-            this.orientationService.onOrientationChange = function (from, to) { return _this.onOrientationChange(from, to); };
-            this.vibrateService = vibrateService;
-            this.cardService.getTopics().then(function (topics) {
+            this.cards = [];
+            this._scope = $scope;
+            this._f7App = f7App;
+            this._mainView = mainView;
+            this._accelerationService = accelerationService;
+            this._cardService = cardService;
+            this._orientationService = orientationService;
+            this._vibrateService = vibrateService;
+            this._accelerationService.onShake = function () { return _this.onShake(); };
+            this._orientationService.onOrientationChange = function (from, to) { return _this.onOrientationChange(from, to); };
+            this._scope.$watch(function () { return _this.topic; }, function (newValue, oldValue) { return _this.onTopicChanged(newValue, oldValue); });
+            this._cardService.getTopics().then(function (topics) {
                 _this.topics = topics;
                 _this.topic = _this.topics.length > 0 ? _this.topics[0] : undefined;
-                _this.cardService.getCards(_this.topic).then(function (cards) {
-                    _this.cards = cards;
-                    _this.card = _this.cards.length > 0 ? cards[0] : undefined;
-                    _this.onOrientationChange(Memo.Orientation.Portrait, _this.orientationService.orientation);
-                });
+                _this.cards.length = 0;
             });
         }
         MemoController.prototype.back = function () {
-            this.mainView.router.back();
-        };
-        MemoController.prototype.changeTopic = function (topic) {
-            var _this = this;
-            this.f7App.closePanel('left');
-            this.topic = topic;
-            this.cardService.getCards(this.topic).then(function (cards) {
-                _this.cards = cards;
-            });
-        };
-        MemoController.prototype.shuffle = function () {
-            var array = this.cards;
-            var counter = array.length;
-            var temp;
-            var index;
-            while (counter > 0) {
-                index = Math.floor(Math.random() * counter);
-                counter--;
-                temp = array[counter];
-                array[counter] = array[index];
-                array[index] = temp;
-            }
+            this._mainView.router.back();
         };
         MemoController.prototype.onOrientationChange = function (from, to) {
             var _this = this;
-            switch (to) {
-                case Memo.Orientation.Portrait:
-                    this.mainView.router.load({ pageName: "portrait", animatePages: false, pushState: false });
-                    break;
-                case Memo.Orientation.PortraitUpsideDown:
-                    this.mainView.router.load({ pageName: "portrait", animatePages: false, pushState: false });
-                    break;
-                case Memo.Orientation.Landscape:
-                    this.mainView.router.load({ pageName: "landscape", animatePages: false, pushState: false });
-                    break;
-                case Memo.Orientation.LandscapeCounterClockwise:
-                    this.mainView.router.load({ pageName: "landscape", animatePages: false, pushState: false });
-                    break;
-            }
-            this.$scope.$apply(function (scope) {
-                _this.turnCards(from, to);
+            this.safeApply(function () {
+                var turn = false;
+                switch (from) {
+                    case Memo.Orientation.Portrait:
+                        turn = to == Memo.Orientation.PortraitUpsideDown || to == Memo.Orientation.LandscapeCounterClockwise;
+                        break;
+                    case Memo.Orientation.PortraitUpsideDown:
+                        turn = to == Memo.Orientation.Portrait || to == Memo.Orientation.Landscape;
+                        break;
+                    case Memo.Orientation.Landscape:
+                        turn = to == Memo.Orientation.LandscapeCounterClockwise || to == Memo.Orientation.PortraitUpsideDown;
+                        break;
+                    case Memo.Orientation.LandscapeCounterClockwise:
+                        turn = to == Memo.Orientation.Landscape || to == Memo.Orientation.Portrait;
+                        break;
+                }
+                if (turn) {
+                    for (var i = 0; i < _this.cards.length; i++) {
+                        _this.cards[i].turn();
+                    }
+                }
+                var pageName;
+                switch (to) {
+                    case Memo.Orientation.Portrait:
+                        pageName = "portrait";
+                        break;
+                    case Memo.Orientation.PortraitUpsideDown:
+                        pageName = "portrait";
+                        break;
+                    case Memo.Orientation.Landscape:
+                        pageName = "landscape";
+                        break;
+                    case Memo.Orientation.LandscapeCounterClockwise:
+                        pageName = "landscape";
+                        break;
+                }
+                _this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
             });
         };
         MemoController.prototype.onShake = function () {
             var _this = this;
-            this.vibrateService.vibrate(1000);
-            this.$scope.$apply(function (scope) { return _this.shuffle(); });
+            this.safeApply(function () {
+                _this._vibrateService.vibrate(1000);
+                var counter = _this.cards.length;
+                var temp;
+                var index;
+                while (counter > 0) {
+                    index = Math.floor(Math.random() * counter);
+                    counter--;
+                    temp = _this.cards[counter];
+                    _this.cards[counter] = _this.cards[index];
+                    _this.cards[index] = temp;
+                }
+            });
         };
-        MemoController.prototype.turnCards = function (from, to) {
-            var turn = false;
-            switch (from) {
-                case Memo.Orientation.Portrait:
-                    turn = to == Memo.Orientation.Landscape || to == Memo.Orientation.PortraitUpsideDown;
-                    break;
-                case Memo.Orientation.PortraitUpsideDown:
-                    turn = to == Memo.Orientation.Landscape || to == Memo.Orientation.Portrait;
-                    break;
-                case Memo.Orientation.Landscape:
-                    turn = to == Memo.Orientation.LandscapeCounterClockwise || to == Memo.Orientation.Portrait;
-                    break;
-                case Memo.Orientation.LandscapeCounterClockwise:
-                    turn = to == Memo.Orientation.Landscape || to == Memo.Orientation.Portrait;
-                    break;
-            }
-            if (!turn)
-                return;
-            for (var i = 0; i < this.cards.length; i++) {
-                var card = this.cards[i];
-                var upperText = card.upperText;
-                card.upperText = card.lowerText;
-                card.lowerText = upperText;
-            }
+        MemoController.prototype.onTopicChanged = function (newValue, oldValue) {
+            var _this = this;
+            this.safeApply(function () {
+                _this._f7App.closePanel('left');
+                _this.cards.length = 0;
+                _this._cardService.getCards(_this.topic).then(function (cards) {
+                    for (var i = 0; i < cards.length; i++) {
+                        _this.cards.push(new CardViewModel(cards[i]));
+                    }
+                    _this.onOrientationChange(Memo.Orientation.Portrait, _this._orientationService.orientation);
+                });
+            });
+        };
+        MemoController.prototype.safeApply = function (func) {
+            (this._scope.$$phase || this._scope.$root.$$phase) ? func() : this._scope.$apply(func);
         };
         MemoController.$inject = ["$scope", "f7App", "mainView", "accelerationService", "cardService", "orientationService", "vibrateService"];
         return MemoController;
     })();
     Memo.MemoController = MemoController;
+    var CardViewModel = (function () {
+        function CardViewModel(card) {
+            this.topic = card.upperText;
+            this.upperText = card.upperText;
+            this.lowerText = card.lowerText;
+            this.show = "upper";
+        }
+        CardViewModel.prototype.turn = function () {
+            var upperText = this.upperText;
+            this.upperText = this.lowerText;
+            this.lowerText = upperText;
+            this.show = this.show == "upper" ? "lower" : "upper";
+        };
+        return CardViewModel;
+    })();
+    Memo.CardViewModel = CardViewModel;
 })(Memo || (Memo = {}));
 var Memo;
 (function (Memo) {

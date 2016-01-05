@@ -3,6 +3,7 @@
     
     declare var Dom7;
     declare var Framework7;
+    declare var window;
 
     let $$: any;
     let f7App: any;
@@ -93,7 +94,6 @@
         }
     }
 
-    window.onload = function () {
-        Application.initialize();
-    }
+    window.shouldRotateToOrientation = (degrees) => { return true };
+    window.onload = () => { Application.initialize() };
 }

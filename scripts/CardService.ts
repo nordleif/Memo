@@ -1,7 +1,7 @@
 ﻿module Memo {
     "use strict";
     
-    export interface Card {
+    export class Card {
         topic: string;
         upperText: string;
         lowerText: string;
@@ -13,19 +13,19 @@
     }
 
     export class CardService implements ICardService {
-        private $http: ng.IHttpService;
-        private $q: ng.IQService;
+        private _http: ng.IHttpService;
+        private _q: ng.IQService;
 
         static $inject = ["$http", "$q"];
 
         constructor($http: ng.IHttpService, $q: ng.IQService) {
-            this.$http = $http;
-            this.$q = $q;
+            this._http = $http;
+            this._q = $q;
         }
 
         getCards(topic: string): ng.IPromise<Card[]> {
-            let defer = this.$q.defer<Card[]>();
-            this.$http.get<any>('cards.json').success((data) => {
+            let defer = this._q.defer<Card[]>();
+            this._http.get<any>('cards.json').success((data) => {
                 let cards: Card[] = data.cards;
                 let result: Card[] = [];
                 for (let i = 0; i < cards.length; i++) {
@@ -40,8 +40,8 @@
         }
 
         getTopics(): ng.IPromise<string[]> {
-            let defer = this.$q.defer<string[]>();
-            this.$http.get<any>('cards.json').success((data) => {
+            let defer = this._q.defer<string[]>();
+            this._http.get<any>('cards.json').success((data) => {
                 let cards: Card[] = data.cards;
                 let result: string[] = [];
                 for (let i = 0; i < cards.length; i++) {
@@ -55,7 +55,7 @@
             })
             return defer.promise;
         }
-        
+
         private contains(array: Array<any>, obj: any) {
             for (let j = 0; j < array.length; j++) {
                 if (array[j] === obj) {

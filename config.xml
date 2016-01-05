@@ -6,8 +6,10 @@
   <content src="index.html" />
   <access origin="*" />
   <vs:features />
-  <preference name="SplashScreen" value="screen" />
+  <preference name="SplashScreen" value="screen " />
   <preference name="windows-target-version" value="8.1" />
+  <preference name="StatusBarOverlaysWebView" value="true" />
+  <preference name="StatusBarStyle" value="lightcontent" />
   <!-- Support for Cordova 5.0.0 plugin system -->
   <plugin name="cordova-plugin-whitelist" version="1" />
   <allow-intent href="http://*/*" />
@@ -108,4 +110,11 @@
   <vs:plugin name="cordova-plugin-vibration" version="2.0.0" />
   <vs:plugin name="cordova-plugin-device-orientation" version="1.0.2" />
   <vs:plugin name="cordova-plugin-device-motion" version="1.2.0" />
+  <preference name="Fullscreen" value="True" />
+  <preference name="KeepRunning" value="True" />
+  <preference name="ShowTitle" value="True" />
+  <preference name="InAppBrowserStorageEnabled" value="True" />
+  <preference name="SuppressesIncrementalRendering" value="True" />
+  <preference name="Orientation" value="default" />
+  <vs:plugin name="cordova-plugin-statusbar" version="2.0.0" />
 </widget>

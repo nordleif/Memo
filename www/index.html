@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/index.css" />
 
 </head>
-<body data-ng-controller="memoController as memo">
+<body class="theme-white" data-ng-controller="memoController as memo">
     <div class="statusbar-overlay"></div>
     <div class="panel-overlay"></div>
 
@@ -21,16 +21,16 @@
         <div class="list-block">
             <ul>
                 <li ng-repeat="topic in memo.topics">
-                    <a class="item-link item-content" ng-click="memo.changeTopic(topic)">
+                    <a class="item-link item-content" ng-click="memo.topic = topic">
                         <div class="item-inner">
                             {{topic}}
                         </div>
                     </a>
                 </li>
                 <li>
-                    <a href="form.html" class="item-link item-content" ng-click="memo.shuffle()">
+                    <a href="form.html" class="item-link item-content" ng-click="memo.shuffle2()">
                         <div class="item-inner">
-                            Shuffle
+                            Shuffle2
                         </div>
                     </a>
                 </li>
@@ -63,11 +63,11 @@
                 
                 <!-- Index -->
                 <div class="navbar-inner" data-page="index">
-                    <div class="center">{{memo.topic}}</div>
+
                 </div>
                 
                 <!-- Portrait -->
-                <div class="navbar-inner cached theme-white" data-page="portrait">
+                <div class="navbar-inner cached" data-page="portrait">
                     <div class="left">
                         <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
                     </div>
@@ -94,16 +94,13 @@
                 <!-- Portrait -->
                 <div class="page cached" data-page="portrait">
                     <div class="page-content">
-                        <div class="list-block inset">
+                        <div class="list-block cards-list">
                             <ul>
-                                <li ng-repeat="card in memo.cards" class="swipeout">
-                                    <div class="swipeout-content item-content">
-                                        <div class="item-inner">{{card.upperText}}</div>
-                                    </div>
-                                    <div class="swipeout-actions-right">
-                                        <a>
-                                            <div style="min-width: 150px;">{{card.lowerText}}</div>
-                                        </a>
+                                <li ng-repeat="card in memo.cards" class="{{card.show}} card">
+                                    <div class="card-content">
+                                        <div class="card-content-inner">
+                                            {{card.upperText}}
+                                        </div>
                                     </div>
                                 </li>
                             </ul>
@@ -127,6 +124,9 @@
         </div>
     </div>
 
+    <!-- Allows us to perform custom mocking, etc for the Apache Ripple Emulator. -->
+    <script src="scripts/RippleMockApi.js"></script> 
+    
     <script src="cordova.js"></script>
     <script src="scripts/platformOverrides.js"></script>
     <script src="scripts/angular.js"></script>
