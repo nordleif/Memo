@@ -5,9 +5,9 @@
     declare var Framework7;
     declare var window;
 
-    let $$: any;
-    let f7App: any;
-    let mainView: any;
+    var $$: any;
+    var f7App: any;
+    var mainView: any;
 
     export module Application {
         export function initialize() {

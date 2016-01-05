@@ -30,13 +30,6 @@
                 this.topic = this.topics.length > 0 ? this.topics[0] : undefined;
                 this.cards.length = 0;
             });
-
-
-
-            
-                
-
-            
         }
         
         cards: CardViewModel[] = [];

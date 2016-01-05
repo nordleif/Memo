@@ -27,7 +27,7 @@
                         </div>
                     </a>
                 </li>
-                <li>
+                <!--<li>
                     <a href="form.html" class="item-link item-content" ng-click="memo.shuffle2()">
                         <div class="item-inner">
                             Shuffle2
@@ -47,7 +47,7 @@
                             Form Example
                         </div>
                     </a>
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>
@@ -96,7 +96,7 @@
                     <div class="page-content">
                         <div class="list-block cards-list">
                             <ul>
-                                <li ng-repeat="card in memo.cards" class="{{card.show}} card">
+                                <li ng-repeat="card in memo.cards" class="{{card.show}} card" ng-click="card.turn()">
                                     <div class="card-content">
                                         <div class="card-content-inner">
                                             {{card.upperText}}
