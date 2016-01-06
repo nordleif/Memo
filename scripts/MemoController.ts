@@ -44,6 +44,8 @@
         
         private onOrientationChange(from: Orientation, to: Orientation): void {
             this.safeApply(() => {
+                this._f7App.closePanel('left');
+
                 let turn: boolean = false;
                 switch (from) {
                     case Orientation.Portrait:
@@ -86,6 +88,7 @@
 
         private onShake(): void {
             this.safeApply(() => {
+                this._f7App.closePanel('left');
                 this._vibrateService.vibrate(1000);
                 
                 let counter: number = this.cards.length;

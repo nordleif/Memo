@@ -72,14 +72,14 @@ var Memo;
         function onNavbarInit(e) {
         }
         function onPageBeforeInit(e) {
-            switch (e.detail.page.name) {
-                case "landscape":
-                    var mySwiper1 = f7App.swiper('.swiper-1', {
-                        pagination: '.swiper-1 .swiper-pagination',
-                        spaceBetween: 50
-                    });
-                    break;
-            }
+            //switch (e.detail.page.name) {
+            //    case "landscape":
+            //        let mySwiper1 = f7App.swiper('.swiper-1', {
+            //            pagination: '.swiper-1 .swiper-pagination',
+            //            spaceBetween: 50
+            //        });
+            //        break;
+            //}
         }
         function onPageInit(e) {
             //let $page = angular.element(e.detail.page.container);
@@ -190,6 +190,7 @@ var Memo;
         MemoController.prototype.onOrientationChange = function (from, to) {
             var _this = this;
             this.safeApply(function () {
+                _this._f7App.closePanel('left');
                 var turn = false;
                 switch (from) {
                     case Memo.Orientation.Portrait:
@@ -231,6 +232,7 @@ var Memo;
         MemoController.prototype.onShake = function () {
             var _this = this;
             this.safeApply(function () {
+                _this._f7App.closePanel('left');
                 _this._vibrateService.vibrate(1000);
                 var counter = _this.cards.length;
                 var temp;

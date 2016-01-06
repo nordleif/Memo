@@ -55,14 +55,14 @@
         }
 
         function onPageBeforeInit(e: any) {
-            switch (e.detail.page.name) {
-                case "landscape":
-                    let mySwiper1 = f7App.swiper('.swiper-1', {
-                        pagination: '.swiper-1 .swiper-pagination',
-                        spaceBetween: 50
-                    });
-                    break;
-            }
+            //switch (e.detail.page.name) {
+            //    case "landscape":
+            //        let mySwiper1 = f7App.swiper('.swiper-1', {
+            //            pagination: '.swiper-1 .swiper-pagination',
+            //            spaceBetween: 50
+            //        });
+            //        break;
+            //}
         }
 
         function onPageInit(e: any) {

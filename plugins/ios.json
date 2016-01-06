@@ -13,7 +13,7 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Vibration\"><param name=\"ios-package\" value=\"CDVVibration\" /></feature>",
+                            "xml": "<feature name=\"Accelerometer\"><param name=\"ios-package\" value=\"CDVAccelerometer\" /></feature>",
                             "count": 1
                         },
                         {
@@ -21,7 +21,19 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Accelerometer\"><param name=\"ios-package\" value=\"CDVAccelerometer\" /></feature>",
+                            "xml": "<feature name=\"Vibration\"><param name=\"ios-package\" value=\"CDVVibration\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"StatusBar\"><param name=\"ios-package\" value=\"CDVStatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"StatusBarOverlaysWebView\" value=\"true\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"StatusBarStyle\" value=\"lightcontent\" />",
                             "count": 1
                         }
                     ]
@@ -29,9 +41,9 @@
             },
             "framework": {
                 "parents": {
-                    "AudioToolbox.framework": [
+                    "CoreMotion.framework": [
                         {
-                            "xml": true,
+                            "xml": false,
                             "count": 1
                         }
                     ],
@@ -41,9 +53,9 @@
                             "count": 1
                         }
                     ],
-                    "CoreMotion.framework": [
+                    "AudioToolbox.framework": [
                         {
-                            "xml": false,
+                            "xml": true,
                             "count": 1
                         }
                     ]
@@ -55,16 +67,19 @@
         "cordova-plugin-console": {
             "PACKAGE_NAME": "io.cordova.myapp36772c"
         },
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "io.cordova.myapp36772c"
-        },
-        "cordova-plugin-vibration": {
+        "cordova-plugin-device-motion": {
             "PACKAGE_NAME": "io.cordova.myapp36772c"
         },
         "cordova-plugin-device-orientation": {
             "PACKAGE_NAME": "io.cordova.myapp36772c"
         },
-        "cordova-plugin-device-motion": {
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "io.cordova.myapp36772c"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "io.cordova.myapp36772c"
+        },
+        "cordova-plugin-statusbar": {
             "PACKAGE_NAME": "io.cordova.myapp36772c"
         }
     },

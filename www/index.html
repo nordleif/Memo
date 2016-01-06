@@ -111,10 +111,18 @@
                 <!-- Landscape -->
                 <div class="page cached" data-page="landscape">
                     <div class="page-content">
-                        <div class="swiper-container swiper-1">
+                        <div class="landscape swiper-container swiper-init">
                             <div class="swiper-pagination"></div>
                             <div class="swiper-wrapper">
-                                <div ng-repeat="card in memo.cards" class="swiper-slide"><span>{{card.upperText}}</span></div>
+                                <div ng-repeat="card in memo.cards" class="swiper-slide">
+                                    <div class="{{card.show}} landscape card" ng-click="card.turn()">
+                                        <div class="card-content">
+                                            <div class="card-content-inner">
+                                                {{card.upperText}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

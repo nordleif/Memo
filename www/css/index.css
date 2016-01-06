@@ -4,6 +4,12 @@ body {
   color: #000000;
 }
 
+.card {
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+}
+
 .card.lower {
     background: #9ccc65;
     color: #000000;
@@ -14,8 +20,14 @@ body {
     color: #ffffff;
 }
 
-.card-content {
-    text-align: center;
+.card.portrait {
+
+}
+
+.card.landscape {
+    font-size: 30px;
+    height: 80%;
+    margin: 30px;
 }
 
 .navbar {
@@ -39,20 +51,6 @@ body {
   color: #ffffff;
 }
 
-.swiper-slide {
-  background: #fff;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-}
-
-.swiper-slide span {
-  text-align:center;
-  display:block;
-  margin: 20px;
-  font-size:21px;
-}
-
-.swiper-container {
-  height: 120px;
-  margin: 35px 0;
+.swiper-container.landscape {
+    height: 100%;
 }
