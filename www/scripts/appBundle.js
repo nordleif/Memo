@@ -16,7 +16,7 @@ var Memo;
                 accelerationChange.z = Math.abs(this.previousAcceleration.z - acceleration.z);
             }
             this.previousAcceleration = { x: acceleration.x, y: acceleration.y, z: acceleration.z };
-            if (typeof this.onShake !== 'undefined' && accelerationChange.x + accelerationChange.y + accelerationChange.z > this.sensitivity) {
+            if (typeof this.onShake !== "undefined" && accelerationChange.x + accelerationChange.y + accelerationChange.z > this.sensitivity) {
                 this.onShake();
             }
         };
@@ -180,8 +180,6 @@ var Memo;
             this._scope.$watch(function () { return _this.topic; }, function (newValue, oldValue) { return _this.onTopicChanged(newValue, oldValue); });
             this._cardService.getTopics().then(function (topics) {
                 _this.topics = topics;
-                _this.topic = _this.topics.length > 0 ? _this.topics[0] : undefined;
-                _this.cards.length = 0;
             });
         }
         MemoController.prototype.back = function () {
@@ -214,16 +212,16 @@ var Memo;
                 var pageName;
                 switch (to) {
                     case Memo.Orientation.Portrait:
-                        pageName = "portrait";
+                        pageName = "cardsPortrait";
                         break;
                     case Memo.Orientation.PortraitUpsideDown:
-                        pageName = "portrait";
+                        pageName = "cardsPortrait";
                         break;
                     case Memo.Orientation.Landscape:
-                        pageName = "landscape";
+                        pageName = "cardsLandscape";
                         break;
                     case Memo.Orientation.LandscapeCounterClockwise:
-                        pageName = "landscape";
+                        pageName = "cardsLandscape";
                         break;
                 }
                 _this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
@@ -249,14 +247,19 @@ var Memo;
         MemoController.prototype.onTopicChanged = function (newValue, oldValue) {
             var _this = this;
             this.safeApply(function () {
-                _this._f7App.closePanel('left');
-                _this.cards.length = 0;
-                _this._cardService.getCards(_this.topic).then(function (cards) {
-                    for (var i = 0; i < cards.length; i++) {
-                        _this.cards.push(new CardViewModel(cards[i]));
-                    }
-                    _this.onOrientationChange(Memo.Orientation.Portrait, _this._orientationService.orientation);
-                });
+                if (!newValue) {
+                    _this._mainView.router.load({ pageName: "topics", animatePages: false, pushState: false });
+                }
+                else {
+                    _this._f7App.closePanel('left');
+                    _this.cards.length = 0;
+                    _this._cardService.getCards(_this.topic).then(function (cards) {
+                        for (var i = 0; i < cards.length; i++) {
+                            _this.cards.push(new CardViewModel(cards[i]));
+                        }
+                        _this.onOrientationChange(Memo.Orientation.Portrait, _this._orientationService.orientation);
+                    });
+                }
             });
         };
         MemoController.prototype.safeApply = function (func) {

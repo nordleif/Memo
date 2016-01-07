@@ -27,8 +27,6 @@
 
             this._cardService.getTopics().then((topics) => {
                 this.topics = topics;
-                this.topic = this.topics.length > 0 ? this.topics[0] : undefined;
-                this.cards.length = 0;
             });
         }
         
@@ -45,7 +43,7 @@
         private onOrientationChange(from: Orientation, to: Orientation): void {
             this.safeApply(() => {
                 this._f7App.closePanel('left');
-
+                
                 let turn: boolean = false;
                 switch (from) {
                     case Orientation.Portrait:
@@ -70,16 +68,16 @@
                 let pageName: string;
                 switch (to) {
                     case Orientation.Portrait:
-                        pageName = "portrait";
+                        pageName = "cardsPortrait";
                         break;
                     case Orientation.PortraitUpsideDown:
-                        pageName = "portrait";
+                        pageName = "cardsPortrait";
                         break;
                     case Orientation.Landscape:
-                        pageName = "landscape";
+                        pageName = "cardsLandscape";
                         break;
                     case Orientation.LandscapeCounterClockwise:
-                        pageName = "landscape";
+                        pageName = "cardsLandscape";
                         break;
                 }
                 this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
@@ -106,14 +104,18 @@
 
         private onTopicChanged(newValue: string, oldValue: string) {
             this.safeApply(() => {
-                this._f7App.closePanel('left');
-                this.cards.length = 0;
-                this._cardService.getCards(this.topic).then((cards) => {
-                    for (let i = 0; i < cards.length; i++) {
-                        this.cards.push(new CardViewModel(cards[i]));
-                    }
-                    this.onOrientationChange(Orientation.Portrait, this._orientationService.orientation);
-                });
+                if (!newValue) {
+                    this._mainView.router.load({ pageName: "topics", animatePages: false, pushState: false });
+                } else {
+                    this._f7App.closePanel('left');
+                    this.cards.length = 0;
+                    this._cardService.getCards(this.topic).then((cards) => {
+                        for (let i = 0; i < cards.length; i++) {
+                            this.cards.push(new CardViewModel(cards[i]));
+                        }
+                        this.onOrientationChange(Orientation.Portrait, this._orientationService.orientation);
+                    });
+                }
             });
         }
 

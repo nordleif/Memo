@@ -63,19 +63,33 @@
                 
                 <!-- Index -->
                 <div class="navbar-inner" data-page="index">
-
+                    <div></div>
                 </div>
                 
-                <!-- Portrait -->
-                <div class="navbar-inner cached" data-page="portrait">
-                    <div class="left">
-                        <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+                <!-- Topics -->
+                <div class="navbar-inner cached" data-page="topics">    
+                    <div class="center">
+                        <img height="25" src="img/memo.png" />
                     </div>
-                    <div class="center">{{memo.topic}}</div>
+                    <div class="right">
+                        <a href="#" class="link icon-only">
+                            <i class="ion-plus-round"></i>
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Landscape -->
-                <div class="navbar-inner cached" data-page="landscape">
+                <!-- Cards Portrait -->
+                <div class="navbar-inner cached" data-page="cardsPortrait">
+                    <div class="left">
+                        <a class="link" ng-click="memo.topic = undefined">
+                            <i class="ion-chevron-left"></i>
+                            <span>{{memo.topic}}</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Cards Landscape -->
+                <div class="navbar-inner cached" data-page="cardsLandscape">
                     <div class="center">{{memo.topic}}</div>
                 </div>
 
@@ -86,13 +100,32 @@
                 
                 <!-- Index -->
                 <div class="page" data-page="index">
-                    <div class="page-content">
-                        
-                    </div>
+                    <div class="page-content"></div>
                 </div>
 
-                <!-- Portrait -->
-                <div class="page cached" data-page="portrait">
+                <!-- Topics -->
+                <div class="page cached" data-page="topics">
+                    <div class="page-content">
+                        <div class="list-block inset">
+                            <ul>
+                                <li ng-repeat="topic in memo.topics">
+                                    <a class="item-link" ng-click="memo.topic = topic">
+                                        <div class="item-content">
+                                            <div class="item-inner">{{topic}}</div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="toolbar toolbar-bottom">
+                        <div class="toolbar-inner">
+                            © nordleif
+                        </div>
+                    </div>
+
+                <!-- Cards Portrait -->
+                <div class="page cached" data-page="cardsPortrait">
                     <div class="page-content">
                         <div class="list-block cards-list">
                             <ul>
@@ -108,8 +141,8 @@
                     </div>
                 </div>
 
-                <!-- Landscape -->
-                <div class="page cached" data-page="landscape">
+                <!-- Cards Landscape -->
+                <div class="page cached" data-page="cardsLandscape">
                     <div class="page-content">
                         <div class="landscape swiper-container swiper-init">
                             <div class="swiper-pagination"></div>

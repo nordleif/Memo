@@ -51,6 +51,22 @@ body {
   color: #ffffff;
 }
 
+.statusbar-overlay {
+    background: #8bc34a;
+}
+
 .swiper-container.landscape {
     height: 100%;
+}
+
+.toolbar {
+  background: #ffffff;
+  border-top: none;
+  color: #000000;
+}
+
+.toolbar-inner {
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
 }

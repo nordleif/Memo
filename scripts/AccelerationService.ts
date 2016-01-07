@@ -24,7 +24,7 @@
             }
             this.previousAcceleration = { x: acceleration.x, y: acceleration.y, z: acceleration.z };
             
-            if (typeof this.onShake !== 'undefined' && accelerationChange.x + accelerationChange.y + accelerationChange.z > this.sensitivity) {
+            if (typeof this.onShake !== "undefined" && accelerationChange.x + accelerationChange.y + accelerationChange.z > this.sensitivity) {
                 this.onShake();
             }
         }
