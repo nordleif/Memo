@@ -19,9 +19,9 @@
 
         static $inject = ["$http", "$q"];
 
-        constructor($http: ng.IHttpService, $q: ng.IQService) {
-            this._http = $http;
-            this._q = $q;
+        constructor(http: ng.IHttpService, q: ng.IQService) {
+            this._http = http;
+            this._q = q;
         }
 
         getCards(topic: string): ng.IPromise<Card[]> {
