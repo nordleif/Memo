@@ -4,27 +4,28 @@ body {
   color: #000000;
 }
 
-.card {
-    display: flex;
-    justify-content: center; /* align horizontal */
-    align-items: center; /* align vertical */
+
+.lower {
+    background: #743cb5;
+    color: #ffffff;
 }
 
-.card.lower {
-    background: #9ccc65;
-    color: #000000;
-}
-
-.card.upper {
+.upper {
     background: #689f38;
     color: #ffffff;
 }
 
-.card.portrait {
+.center {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+
+.center.portrait {
 
 }
 
-.card.landscape {
+.center.landscape {
     font-size: 30px;
     height: 80%;
     margin: 30px;
@@ -32,8 +33,10 @@ body {
 
 .navbar {
   border-bottom: none;
-  background: #8bc34a;
-  color: #ffffff;
+}
+
+.navbar-span {
+
 }
 
 .page {
@@ -57,16 +60,4 @@ body {
 
 .swiper-container.landscape {
     height: 100%;
-}
-
-.toolbar {
-  background: #ffffff;
-  border-top: none;
-  color: #000000;
-}
-
-.toolbar-inner {
-    display: flex;
-    justify-content: center; /* align horizontal */
-    align-items: center; /* align vertical */
 }

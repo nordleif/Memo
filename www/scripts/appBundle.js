@@ -165,73 +165,114 @@ var Memo;
 (function (Memo) {
     "use strict";
     var MemoController = (function () {
-        function MemoController($scope, f7App, mainView, accelerationService, cardService, orientationService, vibrateService) {
+        function MemoController(scope, f7App, mainView, accelerationService, cardService, orientationService, vibrateService) {
             var _this = this;
+            this._canShake = true;
             this.cards = [];
-            this._scope = $scope;
+            this._scope = scope;
             this._f7App = f7App;
             this._mainView = mainView;
             this._accelerationService = accelerationService;
             this._cardService = cardService;
             this._orientationService = orientationService;
             this._vibrateService = vibrateService;
+            this.show = (this._orientationService.orientation == Memo.Orientation.Portrait || this._orientationService.orientation == Memo.Orientation.Landscape) ? "upper" : "lower";
+            this._scope.$watch(function () { return _this.show; }, function (newValue, oldValue) { return _this.onShowChanged(newValue, oldValue); });
             this._accelerationService.onShake = function () { return _this.onShake(); };
             this._orientationService.onOrientationChange = function (from, to) { return _this.onOrientationChange(from, to); };
-            this._scope.$watch(function () { return _this.topic; }, function (newValue, oldValue) { return _this.onTopicChanged(newValue, oldValue); });
             this._cardService.getTopics().then(function (topics) {
                 _this.topics = topics;
+                _this.viewTopics();
             });
         }
-        MemoController.prototype.back = function () {
+        MemoController.prototype.editCard = function (card) {
+            var temp = new Memo.Card();
+            temp.topic = card.topic;
+            temp.upperText = card.upperText;
+            temp.lowerText = card.lowerText;
+            this.card = new CardViewModel(temp);
+            if (card.show == "lower")
+                this.card.turn();
+            this._mainView.router.load({ pageName: "editCard" });
+        };
+        MemoController.prototype.deleteCard = function (card) {
+            for (var i = this.cards.length; i > 0; i--) {
+                if (this.cards[i - 1] == card) {
+                    this.cards.splice(i - 1, 1);
+                }
+            }
+        };
+        MemoController.prototype.newCard = function () {
+            this.editCard(new CardViewModel(new Memo.Card()));
+        };
+        MemoController.prototype.saveCard = function () {
+            this.cards.unshift(this.card);
             this._mainView.router.back();
+        };
+        MemoController.prototype.viewCards = function (topic) {
+            var _this = this;
+            this.safeApply(function () {
+                var pageName = "cardsPortrait";
+                if (_this._orientationService.orientation == Memo.Orientation.Landscape || _this._orientationService.orientation == Memo.Orientation.PortraitUpsideDown)
+                    pageName = "cardsLandscape";
+                _this.topic = topic;
+                _this.cards.length = 0;
+                _this._cardService.getCards(topic).then(function (cards) {
+                    for (var i = 0; i < cards.length; i++)
+                        _this.cards.push(new CardViewModel(cards[i]));
+                    _this.shuffle();
+                    _this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
+                });
+            });
+        };
+        MemoController.prototype.viewTopics = function () {
+            var _this = this;
+            this.safeApply(function () {
+                _this._mainView.router.load({ pageName: "topics", animatePages: false, pushState: false });
+                _this.topic = undefined;
+            });
         };
         MemoController.prototype.onOrientationChange = function (from, to) {
             var _this = this;
             this.safeApply(function () {
-                _this._f7App.closePanel('left');
-                var turn = false;
-                switch (from) {
-                    case Memo.Orientation.Portrait:
-                        turn = to == Memo.Orientation.PortraitUpsideDown || to == Memo.Orientation.LandscapeCounterClockwise;
-                        break;
-                    case Memo.Orientation.PortraitUpsideDown:
-                        turn = to == Memo.Orientation.Portrait || to == Memo.Orientation.Landscape;
-                        break;
-                    case Memo.Orientation.Landscape:
-                        turn = to == Memo.Orientation.LandscapeCounterClockwise || to == Memo.Orientation.PortraitUpsideDown;
-                        break;
-                    case Memo.Orientation.LandscapeCounterClockwise:
-                        turn = to == Memo.Orientation.Landscape || to == Memo.Orientation.Portrait;
-                        break;
-                }
-                if (turn) {
-                    for (var i = 0; i < _this.cards.length; i++) {
-                        _this.cards[i].turn();
-                    }
-                }
-                var pageName;
-                switch (to) {
-                    case Memo.Orientation.Portrait:
-                        pageName = "cardsPortrait";
-                        break;
-                    case Memo.Orientation.PortraitUpsideDown:
-                        pageName = "cardsPortrait";
-                        break;
-                    case Memo.Orientation.Landscape:
-                        pageName = "cardsLandscape";
-                        break;
-                    case Memo.Orientation.LandscapeCounterClockwise:
-                        pageName = "cardsLandscape";
-                        break;
-                }
-                _this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
+                _this.show = (to == Memo.Orientation.Portrait || to == Memo.Orientation.Landscape) ? "upper" : "lower";
+                if (_this._mainView.url != "#cardsPortrait" && _this._mainView.url != "#cardsLandscape")
+                    return;
+                var pageName = (to == Memo.Orientation.Portrait || to == Memo.Orientation.PortraitUpsideDown) ? "cardsPortrait" : "cardsLandscape";
+                if (pageName != _this._mainView.url)
+                    _this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
             });
         };
         MemoController.prototype.onShake = function () {
             var _this = this;
             this.safeApply(function () {
-                _this._f7App.closePanel('left');
+                if (_this._mainView.url != "#cardsPortrait" && _this._mainView.url != "#cardsLandscape")
+                    return;
+                if (!_this._canShake)
+                    return;
+                _this._canShake = false;
+                setTimeout(function () { return _this._canShake = true; }, 1000);
                 _this._vibrateService.vibrate(1000);
+                _this.shuffle();
+            });
+        };
+        MemoController.prototype.onShowChanged = function (newValue, oldValue) {
+            var _this = this;
+            this.safeApply(function () {
+                if (_this._mainView.url != "#cardsPortrait" && _this._mainView.url != "#cardsLandscape")
+                    return;
+                if (newValue == oldValue) {
+                    for (var i = 0; i < _this.cards.length; i++)
+                        _this.cards[i].turn();
+                }
+            });
+        };
+        MemoController.prototype.safeApply = function (func) {
+            (this._scope.$$phase || this._scope.$root.$$phase) ? func() : this._scope.$apply(func);
+        };
+        MemoController.prototype.shuffle = function () {
+            var _this = this;
+            this.safeApply(function () {
                 var counter = _this.cards.length;
                 var temp;
                 var index;
@@ -243,27 +284,6 @@ var Memo;
                     _this.cards[index] = temp;
                 }
             });
-        };
-        MemoController.prototype.onTopicChanged = function (newValue, oldValue) {
-            var _this = this;
-            this.safeApply(function () {
-                if (!newValue) {
-                    _this._mainView.router.load({ pageName: "topics", animatePages: false, pushState: false });
-                }
-                else {
-                    _this._f7App.closePanel('left');
-                    _this.cards.length = 0;
-                    _this._cardService.getCards(_this.topic).then(function (cards) {
-                        for (var i = 0; i < cards.length; i++) {
-                            _this.cards.push(new CardViewModel(cards[i]));
-                        }
-                        _this.onOrientationChange(Memo.Orientation.Portrait, _this._orientationService.orientation);
-                    });
-                }
-            });
-        };
-        MemoController.prototype.safeApply = function (func) {
-            (this._scope.$$phase || this._scope.$root.$$phase) ? func() : this._scope.$apply(func);
         };
         MemoController.$inject = ["$scope", "f7App", "mainView", "accelerationService", "cardService", "orientationService", "vibrateService"];
         return MemoController;

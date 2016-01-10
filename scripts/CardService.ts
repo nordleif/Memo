@@ -2,6 +2,7 @@
     "use strict";
     
     export class Card {
+        cardId: string;
         topic: string;
         upperText: string;
         lowerText: string;

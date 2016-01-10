@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/index.css" />
 
 </head>
-<body class="theme-white" data-ng-controller="memoController as memo">
+<body class="theme-white" ng-controller="memoController as memo">
     <div class="statusbar-overlay"></div>
     <div class="panel-overlay"></div>
 
@@ -59,38 +59,52 @@
         <div class="view view-main">
 
             <!-- Navbar -->
-            <div class="navbar no-border">
+            <div class="{{memo.show}} navbar no-border">
                 
                 <!-- Index -->
                 <div class="navbar-inner" data-page="index">
                     <div></div>
                 </div>
-                
+                                
                 <!-- Topics -->
                 <div class="navbar-inner cached" data-page="topics">    
                     <div class="center">
                         <img height="25" src="img/memo.png" />
                     </div>
                     <div class="right">
-                        <a href="#" class="link icon-only">
-                            <i class="ion-plus-round"></i>
-                        </a>
+                        <a class="link icon-only" ng-click="memo.newCard()"><i class="ion-plus-round"></i></a>
                     </div>
                 </div>
 
                 <!-- Cards Portrait -->
                 <div class="navbar-inner cached" data-page="cardsPortrait">
                     <div class="left">
-                        <a class="link" ng-click="memo.topic = undefined">
+                        <a class="link" ng-click="memo.viewTopics()">
                             <i class="ion-chevron-left"></i>
                             <span>{{memo.topic}}</span>
                         </a>
+                    </div>
+                    <div class="right">
+                        <a class="link icon-only" ng-click="memo.newCard()"><i class="ion-plus-round"></i></a>
                     </div>
                 </div>
 
                 <!-- Cards Landscape -->
                 <div class="navbar-inner cached" data-page="cardsLandscape">
                     <div class="center">{{memo.topic}}</div>
+                </div>
+
+                <!-- Edit Card -->
+                <div class="navbar-inner cached" data-page="editCard">
+                    <div class="left">
+                        <a class="back" href="#"><span class="navbar-span">Cancel</span></a>                  
+                    </div>
+                    <div class="center">
+                        Card
+                    </div>  
+                    <div class="right">
+                        <a ng-click="memo.saveCard()"><span class="navbar-span">OK</span></a>
+                    </div>
                 </div>
 
             </div>
@@ -109,7 +123,7 @@
                         <div class="list-block inset">
                             <ul>
                                 <li ng-repeat="topic in memo.topics">
-                                    <a class="item-link" ng-click="memo.topic = topic">
+                                    <a class="item-link" ng-click="memo.viewCards(topic)">
                                         <div class="item-content">
                                             <div class="item-inner">{{topic}}</div>
                                         </div>
@@ -118,22 +132,22 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="toolbar toolbar-bottom">
-                        <div class="toolbar-inner">
-                            © nordleif
-                        </div>
-                    </div>
+                </div>
 
                 <!-- Cards Portrait -->
                 <div class="page cached" data-page="cardsPortrait">
                     <div class="page-content">
-                        <div class="list-block cards-list">
+                        <div class="list-block">
                             <ul>
-                                <li ng-repeat="card in memo.cards" class="{{card.show}} card" ng-click="card.turn()">
-                                    <div class="card-content">
-                                        <div class="card-content-inner">
+                                <li ng-repeat="card in memo.cards" class="{{card.show}} card center portrait swipeout">
+                                    <div class="item-content swipeout-content" ng-click="card.turn()">
+                                        <div class="item-inner">
                                             {{card.upperText}}
                                         </div>
+                                    </div>
+                                    <div class="swipeout-actions-right">
+                                        <a class="action1 bg-orange" ng-click="memo.editCard(card)"><i class="ion-compose"></i></a>
+                                        <a class="action2" ng-click="memo.deleteCard(card)"><i class="ion-trash-a"></i></a>
                                     </div>
                                 </li>
                             </ul>
@@ -148,7 +162,7 @@
                             <div class="swiper-pagination"></div>
                             <div class="swiper-wrapper">
                                 <div ng-repeat="card in memo.cards" class="swiper-slide">
-                                    <div class="{{card.show}} landscape card" ng-click="card.turn()">
+                                    <div class="{{card.show}} card center landscape" ng-click="card.turn()">
                                         <div class="card-content">
                                             <div class="card-content-inner">
                                                 {{card.upperText}}
@@ -157,6 +171,30 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Card -->
+                <div class="page cached" data-page="editCard">
+                    <div class="page-content">
+                        <div class="list-block cards-list">
+                            <ul>
+                                <li class="card">
+                                    <div class="card-content">
+                                        <div class="card-content-inner">
+                                            <textarea class="upper" ng-model="memo.card.upperText" placeholder="Upper" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="card">
+                                    <div class="card-content">
+                                        <div class="card-content-inner">
+                                            <textarea class="lower" ng-model="memo.card.lowerText" placeholder="Lower" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </li>                        
+                            </ul>
                         </div>
                     </div>
                 </div>
