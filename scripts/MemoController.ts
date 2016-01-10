@@ -3,6 +3,7 @@
     
     export class MemoController {
         private _accelerationService: IAccelerationService;
+        private _canShake: boolean = true;
         private _cardService: ICardService;
         private _f7App: any;
         private _mainView: any;
@@ -12,8 +13,8 @@
         
         static $inject = ["$scope", "f7App", "mainView", "accelerationService", "cardService", "orientationService", "vibrateService"];
         
-        constructor($scope: ng.IScope, f7App: any, mainView: any, accelerationService: IAccelerationService, cardService: ICardService, orientationService: OrientationService, vibrateService : IVibrateService) {
-            this._scope = $scope;
+        constructor(scope: ng.IScope, f7App: any, mainView: any, accelerationService: IAccelerationService, cardService: ICardService, orientationService: OrientationService, vibrateService : IVibrateService) {
+            this._scope = scope;
             this._f7App = f7App;
             this._mainView = mainView;
             this._accelerationService = accelerationService;
@@ -21,74 +22,122 @@
             this._orientationService = orientationService;
             this._vibrateService = vibrateService;
             
+            this.show = (this._orientationService.orientation == Orientation.Portrait || this._orientationService.orientation == Orientation.Landscape) ? "upper" : "lower";
+            this._scope.$watch(() => this.show, (newValue, oldValue) => this.onShowChanged(newValue, oldValue));
+
             this._accelerationService.onShake = () => this.onShake();
             this._orientationService.onOrientationChange = (from: Orientation, to: Orientation) => this.onOrientationChange(from, to);
-            this._scope.$watch(() => this.topic, (newValue, oldValue) => this.onTopicChanged(newValue, oldValue));
-
+            
             this._cardService.getTopics().then((topics) => {
                 this.topics = topics;
+                this.viewTopics();
             });
         }
         
+        card: CardViewModel;
+
         cards: CardViewModel[] = [];
 
+        show: string;
+        
         topic: string;
 
         topics: string[];
+        
+        editCard(card: CardViewModel) {
+            let temp = new Card();
+            temp.topic = card.topic;
+            temp.upperText = card.upperText;
+            temp.lowerText = card.lowerText;
+            this.card = new CardViewModel(temp);
+            if (card.show == "lower")
+                this.card.turn();
+            this._mainView.router.load({ pageName: "editCard" });
+        }
 
-        back(): void {
+        deleteCard(card: Card) {
+            for (let i = this.cards.length; i > 0; i--) {
+                if (this.cards[i - 1] == card) {
+                    this.cards.splice(i - 1, 1);
+                }
+            }
+        }
+
+        newCard() {
+            this.editCard(new CardViewModel(new Card()));
+        }
+
+        saveCard() {
+            this.cards.unshift(this.card);
             this._mainView.router.back();
         }
-        
-        private onOrientationChange(from: Orientation, to: Orientation): void {
-            this.safeApply(() => {
-                this._f7App.closePanel('left');
-                
-                let turn: boolean = false;
-                switch (from) {
-                    case Orientation.Portrait:
-                        turn = to == Orientation.PortraitUpsideDown || to == Orientation.LandscapeCounterClockwise;
-                        break;
-                    case Orientation.PortraitUpsideDown:
-                        turn = to == Orientation.Portrait || to == Orientation.Landscape;
-                        break;
-                    case Orientation.Landscape:
-                        turn = to == Orientation.LandscapeCounterClockwise || to == Orientation.PortraitUpsideDown;
-                        break;
-                    case Orientation.LandscapeCounterClockwise:
-                        turn = to == Orientation.Landscape || to == Orientation.Portrait;
-                        break;
-                }
-                if (turn) {
-                    for (let i = 0; i < this.cards.length; i++) {
-                        this.cards[i].turn();
-                    }
-                }
 
-                let pageName: string;
-                switch (to) {
-                    case Orientation.Portrait:
-                        pageName = "cardsPortrait";
-                        break;
-                    case Orientation.PortraitUpsideDown:
-                        pageName = "cardsPortrait";
-                        break;
-                    case Orientation.Landscape:
-                        pageName = "cardsLandscape";
-                        break;
-                    case Orientation.LandscapeCounterClockwise:
-                        pageName = "cardsLandscape";
-                        break;
-                }
-                this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
+        viewCards(topic: string) {
+            this.safeApply(() => {
+                let pageName = "cardsPortrait";
+                if (this._orientationService.orientation == Orientation.Landscape || this._orientationService.orientation == Orientation.PortraitUpsideDown)
+                    pageName = "cardsLandscape";
+                this.topic = topic;
+                this.cards.length = 0;
+                this._cardService.getCards(topic).then((cards) => {
+                    for (let i = 0; i < cards.length; i++)
+                        this.cards.push(new CardViewModel(cards[i]));
+                    this.shuffle();
+                    this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
+                });
+            });
+        }
+   
+        viewTopics() {
+            this.safeApply(() => {
+                this._mainView.router.load({ pageName: "topics", animatePages: false, pushState: false });
+                this.topic = undefined;
+            });
+        }
+     
+        private onOrientationChange(from: Orientation, to: Orientation) {
+            this.safeApply(() => {
+                this.show = (to == Orientation.Portrait || to == Orientation.Landscape) ? "upper" : "lower";
+
+                if (this._mainView.url != "#cardsPortrait" && this._mainView.url != "#cardsLandscape")
+                    return;
+                let pageName: string = (to == Orientation.Portrait || to == Orientation.PortraitUpsideDown) ? "cardsPortrait" : "cardsLandscape";
+                if (pageName != this._mainView.url)
+                    this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
             });
         }
 
-        private onShake(): void {
+        private onShake() {
             this.safeApply(() => {
-                this._f7App.closePanel('left');
+                if (this._mainView.url != "#cardsPortrait" && this._mainView.url != "#cardsLandscape")
+                    return;
+                if (!this._canShake)
+                    return;
+
+                this._canShake = false;
+                setTimeout(() => this._canShake = true, 1000);
                 this._vibrateService.vibrate(1000);
-                
+                this.shuffle();
+            });
+        }
+
+        private onShowChanged(newValue: string, oldValue: string) {
+            this.safeApply(() => {
+                if (this._mainView.url != "#cardsPortrait" && this._mainView.url != "#cardsLandscape")
+                    return;
+                if (newValue == oldValue) {
+                    for (let i = 0; i < this.cards.length; i++)
+                        this.cards[i].turn();
+                }
+            });
+        }
+
+        private safeApply(func: () => void) {            
+            (this._scope.$$phase || this._scope.$root.$$phase) ? func() : this._scope.$apply(func);
+        }        
+
+        private shuffle() {
+            this.safeApply(() => {
                 let counter: number = this.cards.length;
                 let temp: any;
                 let index: number;
@@ -101,40 +150,25 @@
                 }
             });
         }
-
-        private onTopicChanged(newValue: string, oldValue: string) {
-            this.safeApply(() => {
-                if (!newValue) {
-                    this._mainView.router.load({ pageName: "topics", animatePages: false, pushState: false });
-                } else {
-                    this._f7App.closePanel('left');
-                    this.cards.length = 0;
-                    this._cardService.getCards(this.topic).then((cards) => {
-                        for (let i = 0; i < cards.length; i++) {
-                            this.cards.push(new CardViewModel(cards[i]));
-                        }
-                        this.onOrientationChange(Orientation.Portrait, this._orientationService.orientation);
-                    });
-                }
-            });
-        }
-
-        private safeApply(func : () => void) {
-            (this._scope.$$phase || this._scope.$root.$$phase) ? func() : this._scope.$apply(func);
-        }        
     }
     
     export class CardViewModel  {
         constructor(card: Card) {
+            this.cardId = card.cardId;
             this.topic = card.upperText;
             this.upperText = card.upperText;
             this.lowerText = card.lowerText;
             this.show = "upper";
         }
 
+        cardId: string;
+
         topic: string;
+
         upperText: string;
+
         lowerText: string;
+
         show: string;
 
         turn() {
