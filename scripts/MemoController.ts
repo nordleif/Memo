@@ -45,11 +45,7 @@
         topics: string[];
         
         editCard(card: CardViewModel) {
-            let temp = new Card();
-            temp.topic = card.topic;
-            temp.upperText = card.upperText;
-            temp.lowerText = card.lowerText;
-            this.card = new CardViewModel(temp);
+            this.card = new CardViewModel(card);
             if (card.show == "lower")
                 this.card.turn();
             this._mainView.router.load({ pageName: "editCard" });
@@ -57,17 +53,29 @@
 
         deleteCard(card: Card) {
             for (let i = this.cards.length; i > 0; i--) {
-                if (this.cards[i - 1] == card) {
+                if (this.cards[i - 1].cardId == card.cardId) {
                     this.cards.splice(i - 1, 1);
                 }
             }
         }
 
         newCard() {
-            this.editCard(new CardViewModel(new Card()));
+            let temp = new Card();
+            temp.cardId = uid.newUid();
+            this.editCard(new CardViewModel(temp));
         }
 
         saveCard() {
+            for (let i = 0; i < this.cards.length; i++) {
+                if (this.card.cardId == this.cards[i].cardId) {
+                    this.cards[i].upperText = this.cards[i].show == "upper" ? this.card.upperText : this.card.lowerText;
+                    this.cards[i].lowerText = this.cards[i].show == "lower" ? this.card.lowerText : this.card.lowerText;
+                    this._mainView.router.back();
+                    return;
+                }
+            }
+            
+            this.card.show = this.show;
             this.cards.unshift(this.card);
             this._mainView.router.back();
         }
@@ -80,8 +88,10 @@
                 this.topic = topic;
                 this.cards.length = 0;
                 this._cardService.getCards(topic).then((cards) => {
-                    for (let i = 0; i < cards.length; i++)
+                    for (let i = 0; i < cards.length; i++) {
+                        var c = cards[i];
                         this.cards.push(new CardViewModel(cards[i]));
+                    }
                     this.shuffle();
                     this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
                 });
@@ -153,7 +163,7 @@
     }
     
     export class CardViewModel  {
-        constructor(card: Card) {
+        constructor(card?: Card) {
             this.cardId = card.cardId;
             this.topic = card.upperText;
             this.upperText = card.upperText;
@@ -168,7 +178,7 @@
         upperText: string;
 
         lowerText: string;
-
+        
         show: string;
 
         turn() {

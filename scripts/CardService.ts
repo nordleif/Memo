@@ -31,6 +31,7 @@
                 let result: Card[] = [];
                 for (let i = 0; i < cards.length; i++) {
                     let card = cards[i];
+                    card.cardId = uid.newUid();
                     if (card.topic == topic) {
                         result.push(card);
                     }

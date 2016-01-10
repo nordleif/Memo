@@ -112,9 +112,9 @@ var Memo;
     })();
     Memo.Card = Card;
     var CardService = (function () {
-        function CardService($http, $q) {
-            this._http = $http;
-            this._q = $q;
+        function CardService(http, q) {
+            this._http = http;
+            this._q = q;
         }
         CardService.prototype.getCards = function (topic) {
             var defer = this._q.defer();
@@ -123,6 +123,7 @@ var Memo;
                 var result = [];
                 for (var i = 0; i < cards.length; i++) {
                     var card = cards[i];
+                    card.cardId = Memo.uid.newUid();
                     if (card.topic == topic) {
                         result.push(card);
                     }
@@ -164,6 +165,23 @@ var Memo;
 var Memo;
 (function (Memo) {
     "use strict";
+    var uid;
+    (function (uid_1) {
+        function newUid() {
+            var d = new Date().getTime();
+            var uid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+            return uid;
+        }
+        uid_1.newUid = newUid;
+    })(uid = Memo.uid || (Memo.uid = {}));
+})(Memo || (Memo = {}));
+var Memo;
+(function (Memo) {
+    "use strict";
     var MemoController = (function () {
         function MemoController(scope, f7App, mainView, accelerationService, cardService, orientationService, vibrateService) {
             var _this = this;
@@ -186,26 +204,33 @@ var Memo;
             });
         }
         MemoController.prototype.editCard = function (card) {
-            var temp = new Memo.Card();
-            temp.topic = card.topic;
-            temp.upperText = card.upperText;
-            temp.lowerText = card.lowerText;
-            this.card = new CardViewModel(temp);
+            this.card = new CardViewModel(card);
             if (card.show == "lower")
                 this.card.turn();
             this._mainView.router.load({ pageName: "editCard" });
         };
         MemoController.prototype.deleteCard = function (card) {
             for (var i = this.cards.length; i > 0; i--) {
-                if (this.cards[i - 1] == card) {
+                if (this.cards[i - 1].cardId == card.cardId) {
                     this.cards.splice(i - 1, 1);
                 }
             }
         };
         MemoController.prototype.newCard = function () {
-            this.editCard(new CardViewModel(new Memo.Card()));
+            var temp = new Memo.Card();
+            temp.cardId = Memo.uid.newUid();
+            this.editCard(new CardViewModel(temp));
         };
         MemoController.prototype.saveCard = function () {
+            for (var i = 0; i < this.cards.length; i++) {
+                if (this.card.cardId == this.cards[i].cardId) {
+                    this.cards[i].upperText = this.cards[i].show == "upper" ? this.card.upperText : this.card.lowerText;
+                    this.cards[i].lowerText = this.cards[i].show == "lower" ? this.card.lowerText : this.card.lowerText;
+                    this._mainView.router.back();
+                    return;
+                }
+            }
+            this.card.show = this.show;
             this.cards.unshift(this.card);
             this._mainView.router.back();
         };
@@ -218,8 +243,10 @@ var Memo;
                 _this.topic = topic;
                 _this.cards.length = 0;
                 _this._cardService.getCards(topic).then(function (cards) {
-                    for (var i = 0; i < cards.length; i++)
+                    for (var i = 0; i < cards.length; i++) {
+                        var c = cards[i];
                         _this.cards.push(new CardViewModel(cards[i]));
+                    }
                     _this.shuffle();
                     _this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
                 });
@@ -291,6 +318,7 @@ var Memo;
     Memo.MemoController = MemoController;
     var CardViewModel = (function () {
         function CardViewModel(card) {
+            this.cardId = card.cardId;
             this.topic = card.upperText;
             this.upperText = card.upperText;
             this.lowerText = card.lowerText;
