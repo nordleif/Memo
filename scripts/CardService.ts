@@ -9,8 +9,10 @@
     }
 
     export interface ICardService {
+        deleteCard(card: Card): ng.IPromise<void>;
         getCards(topic: string): ng.IPromise<Card[]>;
         getTopics(): ng.IPromise<string[]>;
+        saveCard(card: Card): ng.IPromise<void>;
     }
 
     export class CardService implements ICardService {
@@ -24,27 +26,38 @@
             this._q = q;
         }
 
+        deleteCard(card: Card): ng.IPromise<void> {
+            return this.internalReadCards().then((cards) => {
+                let found: boolean = false;
+                for (let i = cards.length; i > 0; i--) {
+                    if (cards[i - 1].cardId == card.cardId) {
+                        cards.splice(i - 1, 1);
+                        break;
+                    }
+                }
+                return cards;
+            }).then((cards) => {
+                return this.internalWriteCard(cards);
+            });
+        }
+
         getCards(topic: string): ng.IPromise<Card[]> {
             let defer = this._q.defer<Card[]>();
-            this._http.get<any>('cards.json').success((data) => {
-                let cards: Card[] = data.cards;
+            this.internalReadCards().then((cards) => {
                 let result: Card[] = [];
                 for (let i = 0; i < cards.length; i++) {
                     let card = cards[i];
-                    card.cardId = uid.newUid();
-                    if (card.topic == topic) {
+                    if (card.topic == topic)
                         result.push(card);
-                    }
                 }
                 defer.resolve(result);
-            })
+            });
             return defer.promise;
         }
 
         getTopics(): ng.IPromise<string[]> {
             let defer = this._q.defer<string[]>();
-            this._http.get<any>('cards.json').success((data) => {
-                let cards: Card[] = data.cards;
+            this.internalReadCards().then((cards) => {
                 let result: string[] = [];
                 for (let i = 0; i < cards.length; i++) {
                     let card = cards[i];
@@ -54,8 +67,26 @@
                     }
                 }
                 defer.resolve(result);
-            })
+            });
             return defer.promise;
+        }
+
+        saveCard(card: Card): ng.IPromise<void> {
+            return this.internalReadCards().then((cards) => {
+                let found: boolean = false;
+                for (let i = cards.length; i > 0; i--) {
+                    if (cards[i - 1].cardId == card.cardId) {
+                        cards[i - 1].topic = card.topic;
+                        cards[i - 1].upperText = card.upperText;
+                        cards[i - 1].lowerText = card.lowerText;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    cards.push(card);
+                return this.internalWriteCard(cards);
+            });
         }
 
         private contains(array: Array<any>, obj: any) {
@@ -65,6 +96,30 @@
                 }
             }
             return false;
+        }
+        
+        private internalReadCards(): ng.IPromise<Card[]> {
+            let defer = this._q.defer<Card[]>();
+            let cards: Card[] = JSON.parse(localStorage.getItem("memo.cards"));
+            if (cards) {
+                defer.resolve(cards);
+            } else {
+                this._http.get<any>('cards.json').success((data) => {
+                    cards = data.cards;
+                    for (let i = 0; i < cards.length; i++) {
+                        cards[i].cardId = uid.newUid();
+                    }
+                    defer.resolve(cards);
+                });
+            }
+            return defer.promise;
+        }
+
+        private internalWriteCard(cards: Card[]): ng.IPromise<void> {
+            let defer = this._q.defer<void>();
+            localStorage.setItem("memo.cards", JSON.stringify(cards));
+            defer.resolve(undefined);
+            return defer.promise;
         }
     }
 }

@@ -6,7 +6,7 @@ body {
 
 
 .lower {
-    background: #743cb5;
+    background: #007acc;
     color: #ffffff;
 }
 
@@ -22,7 +22,13 @@ body {
 }
 
 .center.portrait {
+    margin-bottom: 15px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 15px;
 
+    padding-bottom: 5px;
+    padding-top: 5px;
 }
 
 .center.landscape {
@@ -35,8 +41,14 @@ body {
   border-bottom: none;
 }
 
-.navbar-span {
+.navbar-lower {
+    background: #3399ff;
+    color: #ffffff;
+}
 
+.navbar-upper {
+    background: #8bc34a;
+    color: #ffffff;
 }
 
 .page {

@@ -116,17 +116,29 @@ var Memo;
             this._http = http;
             this._q = q;
         }
+        CardService.prototype.deleteCard = function (card) {
+            var _this = this;
+            return this.internalReadCards().then(function (cards) {
+                var found = false;
+                for (var i = cards.length; i > 0; i--) {
+                    if (cards[i - 1].cardId == card.cardId) {
+                        cards.splice(i - 1, 1);
+                        break;
+                    }
+                }
+                return cards;
+            }).then(function (cards) {
+                return _this.internalWriteCard(cards);
+            });
+        };
         CardService.prototype.getCards = function (topic) {
             var defer = this._q.defer();
-            this._http.get('cards.json').success(function (data) {
-                var cards = data.cards;
+            this.internalReadCards().then(function (cards) {
                 var result = [];
                 for (var i = 0; i < cards.length; i++) {
                     var card = cards[i];
-                    card.cardId = Memo.uid.newUid();
-                    if (card.topic == topic) {
+                    if (card.topic == topic)
                         result.push(card);
-                    }
                 }
                 defer.resolve(result);
             });
@@ -135,8 +147,7 @@ var Memo;
         CardService.prototype.getTopics = function () {
             var _this = this;
             var defer = this._q.defer();
-            this._http.get('cards.json').success(function (data) {
-                var cards = data.cards;
+            this.internalReadCards().then(function (cards) {
                 var result = [];
                 for (var i = 0; i < cards.length; i++) {
                     var card = cards[i];
@@ -149,6 +160,24 @@ var Memo;
             });
             return defer.promise;
         };
+        CardService.prototype.saveCard = function (card) {
+            var _this = this;
+            return this.internalReadCards().then(function (cards) {
+                var found = false;
+                for (var i = cards.length; i > 0; i--) {
+                    if (cards[i - 1].cardId == card.cardId) {
+                        cards[i - 1].topic = card.topic;
+                        cards[i - 1].upperText = card.upperText;
+                        cards[i - 1].lowerText = card.lowerText;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    cards.push(card);
+                return _this.internalWriteCard(cards);
+            });
+        };
         CardService.prototype.contains = function (array, obj) {
             for (var j = 0; j < array.length; j++) {
                 if (array[j] === obj) {
@@ -156,6 +185,29 @@ var Memo;
                 }
             }
             return false;
+        };
+        CardService.prototype.internalReadCards = function () {
+            var defer = this._q.defer();
+            var cards = JSON.parse(localStorage.getItem("memo.cards"));
+            if (cards) {
+                defer.resolve(cards);
+            }
+            else {
+                this._http.get('cards.json').success(function (data) {
+                    cards = data.cards;
+                    for (var i = 0; i < cards.length; i++) {
+                        cards[i].cardId = Memo.uid.newUid();
+                    }
+                    defer.resolve(cards);
+                });
+            }
+            return defer.promise;
+        };
+        CardService.prototype.internalWriteCard = function (cards) {
+            var defer = this._q.defer();
+            localStorage.setItem("memo.cards", JSON.stringify(cards));
+            defer.resolve(undefined);
+            return defer.promise;
         };
         CardService.$inject = ["$http", "$q"];
         return CardService;
@@ -210,29 +262,49 @@ var Memo;
             this._mainView.router.load({ pageName: "editCard" });
         };
         MemoController.prototype.deleteCard = function (card) {
-            for (var i = this.cards.length; i > 0; i--) {
-                if (this.cards[i - 1].cardId == card.cardId) {
-                    this.cards.splice(i - 1, 1);
+            var _this = this;
+            this._cardService.deleteCard(card).then(function () {
+                for (var i = _this.cards.length; i > 0; i--) {
+                    if (_this.cards[i - 1].cardId == card.cardId) {
+                        _this.cards.splice(i - 1, 1);
+                    }
                 }
-            }
+                _this._cardService.getTopics().then(function (topics) {
+                    _this.topics == topics;
+                    if (_this.cards.length == 0) {
+                        _this._mainView.router.back();
+                    }
+                });
+            });
         };
         MemoController.prototype.newCard = function () {
             var temp = new Memo.Card();
             temp.cardId = Memo.uid.newUid();
+            temp.topic = this.topic;
             this.editCard(new CardViewModel(temp));
         };
         MemoController.prototype.saveCard = function () {
-            for (var i = 0; i < this.cards.length; i++) {
-                if (this.card.cardId == this.cards[i].cardId) {
-                    this.cards[i].upperText = this.cards[i].show == "upper" ? this.card.upperText : this.card.lowerText;
-                    this.cards[i].lowerText = this.cards[i].show == "lower" ? this.card.lowerText : this.card.lowerText;
-                    this._mainView.router.back();
-                    return;
+            var _this = this;
+            this._cardService.saveCard(this.card).then(function () {
+                if (_this.topic == _this.card.topic) {
+                    var found = false;
+                    for (var i = 0; i < _this.cards.length; i++) {
+                        if (_this.card.cardId == _this.cards[i].cardId) {
+                            _this.cards[i].upperText = _this.cards[i].show == "upper" ? _this.card.upperText : _this.card.lowerText;
+                            _this.cards[i].lowerText = _this.cards[i].show == "lower" ? _this.card.lowerText : _this.card.lowerText;
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        _this.card.show = _this.show;
+                        _this.cards.unshift(_this.card);
+                    }
                 }
-            }
-            this.card.show = this.show;
-            this.cards.unshift(this.card);
-            this._mainView.router.back();
+                _this._cardService.getTopics().then(function (topics) {
+                    _this.topics == topics;
+                    _this._mainView.router.back();
+                });
+            });
         };
         MemoController.prototype.viewCards = function (topic) {
             var _this = this;
@@ -255,16 +327,21 @@ var Memo;
         MemoController.prototype.viewTopics = function () {
             var _this = this;
             this.safeApply(function () {
-                _this._mainView.router.load({ pageName: "topics", animatePages: false, pushState: false });
+                _this.cards.length = 0;
+                _this.show = "upper";
                 _this.topic = undefined;
+                _this._cardService.getTopics().then(function (topics) {
+                    _this.topics = topics;
+                    _this._mainView.router.load({ pageName: "topics", animatePages: false, pushState: false });
+                });
             });
         };
         MemoController.prototype.onOrientationChange = function (from, to) {
             var _this = this;
             this.safeApply(function () {
-                _this.show = (to == Memo.Orientation.Portrait || to == Memo.Orientation.LandscapeCounterClockwise) ? "upper" : "lower";
                 if (_this._mainView.url != "#cardsPortrait" && _this._mainView.url != "#cardsLandscape")
                     return;
+                _this.show = (to == Memo.Orientation.Portrait || to == Memo.Orientation.LandscapeCounterClockwise) ? "upper" : "lower";
                 var pageName = (to == Memo.Orientation.Portrait || to == Memo.Orientation.PortraitUpsideDown) ? "cardsPortrait" : "cardsLandscape";
                 if (pageName != _this._mainView.url)
                     _this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
@@ -319,7 +396,7 @@ var Memo;
     var CardViewModel = (function () {
         function CardViewModel(card) {
             this.cardId = card.cardId;
-            this.topic = card.upperText;
+            this.topic = card.topic;
             this.upperText = card.upperText;
             this.lowerText = card.lowerText;
             this.show = "upper";

@@ -52,32 +52,51 @@
         }
 
         deleteCard(card: Card) {
-            for (let i = this.cards.length; i > 0; i--) {
-                if (this.cards[i - 1].cardId == card.cardId) {
-                    this.cards.splice(i - 1, 1);
+            this._cardService.deleteCard(card).then(() => {
+                for (let i = this.cards.length; i > 0; i--) {
+                    if (this.cards[i - 1].cardId == card.cardId) {
+                        this.cards.splice(i - 1, 1);
+                    }
                 }
-            }
+
+                this._cardService.getTopics().then((topics) => {
+                    this.topics == topics
+                    if (this.cards.length == 0) {
+                        this._mainView.router.back();
+                    }
+                });
+            });
         }
 
         newCard() {
             let temp = new Card();
             temp.cardId = uid.newUid();
+            temp.topic = this.topic;
             this.editCard(new CardViewModel(temp));
         }
 
         saveCard() {
-            for (let i = 0; i < this.cards.length; i++) {
-                if (this.card.cardId == this.cards[i].cardId) {
-                    this.cards[i].upperText = this.cards[i].show == "upper" ? this.card.upperText : this.card.lowerText;
-                    this.cards[i].lowerText = this.cards[i].show == "lower" ? this.card.lowerText : this.card.lowerText;
-                    this._mainView.router.back();
-                    return;
+            this._cardService.saveCard(this.card).then(() => {
+                if (this.topic == this.card.topic) {
+                    let found: boolean = false;
+                    for (let i = 0; i < this.cards.length; i++) {
+                        if (this.card.cardId == this.cards[i].cardId) {
+                            this.cards[i].upperText = this.cards[i].show == "upper" ? this.card.upperText : this.card.lowerText;
+                            this.cards[i].lowerText = this.cards[i].show == "lower" ? this.card.lowerText : this.card.lowerText;
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        this.card.show = this.show;
+                        this.cards.unshift(this.card);
+                    }
                 }
-            }
-            
-            this.card.show = this.show;
-            this.cards.unshift(this.card);
-            this._mainView.router.back();
+
+                this._cardService.getTopics().then((topics) => {
+                    this.topics == topics
+                    this._mainView.router.back();
+                });
+            });
         }
 
         viewCards(topic: string) {
@@ -100,17 +119,23 @@
    
         viewTopics() {
             this.safeApply(() => {
-                this._mainView.router.load({ pageName: "topics", animatePages: false, pushState: false });
+                this.cards.length = 0;
+                this.show = "upper";
                 this.topic = undefined;
+                this._cardService.getTopics().then((topics) => {
+                    this.topics = topics;
+                    this._mainView.router.load({ pageName: "topics", animatePages: false, pushState: false });
+                });
             });
         }
      
         private onOrientationChange(from: Orientation, to: Orientation) {
             this.safeApply(() => {
-                this.show = (to == Orientation.Portrait || to == Orientation.LandscapeCounterClockwise) ? "upper" : "lower";
-
                 if (this._mainView.url != "#cardsPortrait" && this._mainView.url != "#cardsLandscape")
                     return;
+
+                this.show = (to == Orientation.Portrait || to == Orientation.LandscapeCounterClockwise) ? "upper" : "lower";
+
                 let pageName: string = (to == Orientation.Portrait || to == Orientation.PortraitUpsideDown) ? "cardsPortrait" : "cardsLandscape";
                 if (pageName != this._mainView.url)
                     this._mainView.router.load({ pageName: pageName, animatePages: false, pushState: false });
@@ -165,7 +190,7 @@
     export class CardViewModel  {
         constructor(card?: Card) {
             this.cardId = card.cardId;
-            this.topic = card.upperText;
+            this.topic = card.topic;
             this.upperText = card.upperText;
             this.lowerText = card.lowerText;
             this.show = "upper";

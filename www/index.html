@@ -13,7 +13,7 @@
 
 </head>
 <body class="theme-white" ng-controller="memoController as memo">
-    <div class="{{memo.show}} statusbar-overlay"></div>
+    <div class="navbar-{{memo.show}} statusbar-overlay"></div>
     <div class="panel-overlay"></div>
 
     <!-- Left Drawer -->
@@ -59,7 +59,7 @@
         <div class="view view-main">
 
             <!-- Navbar -->
-            <div class="{{memo.show}} navbar no-border">
+            <div class="navbar-{{memo.show}} navbar no-border">
                 
                 <!-- Index -->
                 <div class="navbar-inner" data-page="index">
@@ -147,7 +147,7 @@
                                     </div>
                                     <div class="swipeout-actions-right">
                                         <a class="action1 bg-orange" ng-click="memo.editCard(card)"><i class="ion-compose"></i></a>
-                                        <a class="action2" ng-click="memo.deleteCard(card)"><i class="ion-trash-a"></i></a>
+                                        <a class="action2 bg-red" ng-click="memo.deleteCard(card)"><i class="ion-trash-a"></i></a>
                                     </div>
                                 </li>
                             </ul>
@@ -178,22 +178,36 @@
                 <!-- Edit Card -->
                 <div class="page cached" data-page="editCard">
                     <div class="page-content">
-                        <div class="list-block cards-list">
+                        <div class="list-block">
                             <ul>
-                                <li class="card">
-                                    <div class="card-content">
-                                        <div class="card-content-inner">
-                                            <textarea class="upper" ng-model="memo.card.upperText" placeholder="Upper" rows="5"></textarea>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title label">Topic</div>
+                                            <div class="item-input">
+                                                <input type="text" ng-model="memo.card.topic">
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
-                                <li class="card">
-                                    <div class="card-content">
-                                        <div class="card-content-inner">
-                                            <textarea class="lower" ng-model="memo.card.lowerText" placeholder="Lower" rows="5"></textarea>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-input">
+                                                <textarea class="upper" ng-model="memo.card.upperText" placeholder="upper" rows="5"></textarea>
+                                            </div>
                                         </div>
                                     </div>
-                                </li>                        
+                                </li>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-input">
+                                                <textarea class="lower" ng-model="memo.card.lowerText" placeholder="lower" rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>                                                        
                             </ul>
                         </div>
                     </div>
@@ -203,7 +217,7 @@
         </div>
     </div>
 
-    <!-- Allows us to perform custom mocking, etc for the Apache Ripple Emulator. -->
+    <!-- Custom mocking for the Apache Ripple Emulator -->
     <script src="scripts/RippleMockApi.js"></script> 
     
     <script src="cordova.js"></script>
