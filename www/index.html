@@ -137,13 +137,15 @@
                 <!-- Cards Portrait -->
                 <div class="page cached" data-page="cardsPortrait">
                     <div class="page-content">
-                        <div class="list-block">
-                            <ul>
+                        <div class="list-block cards">
+                            <ul>                                     <!-- {{card.show}} card center portrait swipeout -->
                                 <li ng-repeat="card in memo.cards" class="{{card.show}} card center portrait swipeout">
-                                    <div class="item-content swipeout-content" ng-click="card.turn()">
-                                        <div class="item-inner">
+                                    <div class="swipeout-content" ng-click="card.turn()">
+                                       <div class="item-content">
+                                         <div class="item-inner">
                                             {{card.upperText}}
                                         </div>
+                                       </div>
                                     </div>
                                     <div class="swipeout-actions-right">
                                         <a class="action1 bg-orange" ng-click="memo.editCard(card)"><i class="ion-compose"></i></a>
@@ -183,9 +185,8 @@
                                 <li>
                                     <div class="item-content">
                                         <div class="item-inner">
-                                            <div class="item-title label">Topic</div>
                                             <div class="item-input">
-                                                <input type="text" ng-model="memo.card.topic">
+                                                <input type="text" ng-model="memo.card.topic" placeholder="Topic" />
                                             </div>
                                         </div>
                                     </div>
@@ -194,7 +195,7 @@
                                     <div class="item-content">
                                         <div class="item-inner">
                                             <div class="item-input">
-                                                <textarea class="upper" ng-model="memo.card.upperText" placeholder="upper" rows="5"></textarea>
+                                                <textarea ng-model="memo.card.upperText" placeholder="Upper Card" rows="5"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -203,7 +204,7 @@
                                     <div class="item-content">
                                         <div class="item-inner">
                                             <div class="item-input">
-                                                <textarea class="lower" ng-model="memo.card.lowerText" placeholder="lower" rows="5"></textarea>
+                                                <textarea ng-model="memo.card.lowerText" placeholder="Lower Card" rows="5"></textarea>
                                             </div>
                                         </div>
                                     </div>

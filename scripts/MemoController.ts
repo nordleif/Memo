@@ -58,9 +58,11 @@
                         this.cards.splice(i - 1, 1);
                     }
                 }
-
                 this._cardService.getTopics().then((topics) => {
-                    this.topics == topics
+                    this.topics.length = 0;
+                    for (let i = 0; i < topics.length; i++) {
+                        this.topics.push(topics[i]);
+                    }                    
                     if (this.cards.length == 0) {
                         this._mainView.router.back();
                     }
@@ -93,7 +95,10 @@
                 }
 
                 this._cardService.getTopics().then((topics) => {
-                    this.topics == topics
+                    this.topics.length = 0;
+                    for (let i = 0; i < topics.length; i++) {
+                        this.topics.push(topics[i]);
+                    }
                     this._mainView.router.back();
                 });
             });

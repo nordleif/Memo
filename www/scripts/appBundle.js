@@ -270,7 +270,10 @@ var Memo;
                     }
                 }
                 _this._cardService.getTopics().then(function (topics) {
-                    _this.topics == topics;
+                    _this.topics.length = 0;
+                    for (var i = 0; i < topics.length; i++) {
+                        _this.topics.push(topics[i]);
+                    }
                     if (_this.cards.length == 0) {
                         _this._mainView.router.back();
                     }
@@ -301,7 +304,10 @@ var Memo;
                     }
                 }
                 _this._cardService.getTopics().then(function (topics) {
-                    _this.topics == topics;
+                    _this.topics.length = 0;
+                    for (var i = 0; i < topics.length; i++) {
+                        _this.topics.push(topics[i]);
+                    }
                     _this._mainView.router.back();
                 });
             });
