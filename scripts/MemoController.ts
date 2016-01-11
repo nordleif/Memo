@@ -83,7 +83,7 @@
         viewCards(topic: string) {
             this.safeApply(() => {
                 let pageName = "cardsPortrait";
-                if (this._orientationService.orientation == Orientation.Landscape || this._orientationService.orientation == Orientation.PortraitUpsideDown)
+                if (this._orientationService.orientation == Orientation.Landscape || this._orientationService.orientation == Orientation.LandscapeCounterClockwise)
                     pageName = "cardsLandscape";
                 this.topic = topic;
                 this.cards.length = 0;
@@ -107,7 +107,7 @@
      
         private onOrientationChange(from: Orientation, to: Orientation) {
             this.safeApply(() => {
-                this.show = (to == Orientation.Portrait || to == Orientation.Landscape) ? "upper" : "lower";
+                this.show = (to == Orientation.Portrait || to == Orientation.LandscapeCounterClockwise) ? "upper" : "lower";
 
                 if (this._mainView.url != "#cardsPortrait" && this._mainView.url != "#cardsLandscape")
                     return;
@@ -125,8 +125,8 @@
                     return;
 
                 this._canShake = false;
-                setTimeout(() => this._canShake = true, 1000);
-                this._vibrateService.vibrate(1000);
+                setTimeout(() => this._canShake = true, 2000);
+                this._vibrateService.vibrate(2000);
                 this.shuffle();
             });
         }
@@ -135,7 +135,7 @@
             this.safeApply(() => {
                 if (this._mainView.url != "#cardsPortrait" && this._mainView.url != "#cardsLandscape")
                     return;
-                if (newValue == oldValue) {
+                if (newValue != oldValue) {
                     for (let i = 0; i < this.cards.length; i++)
                         this.cards[i].turn();
                 }

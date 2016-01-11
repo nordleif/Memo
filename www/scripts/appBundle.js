@@ -238,7 +238,7 @@ var Memo;
             var _this = this;
             this.safeApply(function () {
                 var pageName = "cardsPortrait";
-                if (_this._orientationService.orientation == Memo.Orientation.Landscape || _this._orientationService.orientation == Memo.Orientation.PortraitUpsideDown)
+                if (_this._orientationService.orientation == Memo.Orientation.Landscape || _this._orientationService.orientation == Memo.Orientation.LandscapeCounterClockwise)
                     pageName = "cardsLandscape";
                 _this.topic = topic;
                 _this.cards.length = 0;
@@ -262,7 +262,7 @@ var Memo;
         MemoController.prototype.onOrientationChange = function (from, to) {
             var _this = this;
             this.safeApply(function () {
-                _this.show = (to == Memo.Orientation.Portrait || to == Memo.Orientation.Landscape) ? "upper" : "lower";
+                _this.show = (to == Memo.Orientation.Portrait || to == Memo.Orientation.LandscapeCounterClockwise) ? "upper" : "lower";
                 if (_this._mainView.url != "#cardsPortrait" && _this._mainView.url != "#cardsLandscape")
                     return;
                 var pageName = (to == Memo.Orientation.Portrait || to == Memo.Orientation.PortraitUpsideDown) ? "cardsPortrait" : "cardsLandscape";
@@ -278,8 +278,8 @@ var Memo;
                 if (!_this._canShake)
                     return;
                 _this._canShake = false;
-                setTimeout(function () { return _this._canShake = true; }, 1000);
-                _this._vibrateService.vibrate(1000);
+                setTimeout(function () { return _this._canShake = true; }, 2000);
+                _this._vibrateService.vibrate(2000);
                 _this.shuffle();
             });
         };
@@ -288,7 +288,7 @@ var Memo;
             this.safeApply(function () {
                 if (_this._mainView.url != "#cardsPortrait" && _this._mainView.url != "#cardsLandscape")
                     return;
-                if (newValue == oldValue) {
+                if (newValue != oldValue) {
                     for (var i = 0; i < _this.cards.length; i++)
                         _this.cards[i].turn();
                 }
